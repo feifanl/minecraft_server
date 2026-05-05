@@ -4,7 +4,7 @@ A collection of server/client modpacks for use by me and my friends, with docume
 
 ---
 
-## Contents
+# Contents
 
 - [Player Quick Start](#player-quick-start) - quickstart to join a server
 - [Modpacks](#modpacks) - what's in the server-side and client-side packs
@@ -13,7 +13,7 @@ A collection of server/client modpacks for use by me and my friends, with docume
 
 ---
 
-## Player Quick Start
+# Player Quick Start
 
 1. Download a mod launcher, I recommend [Prism Launcher](https://prismlauncher.org/download/windows/).
 2. Pick the modpack you want and download the matching `.mrpack` file from the `client/` folder.
@@ -26,15 +26,13 @@ A collection of server/client modpacks for use by me and my friends, with docume
 
 ---
 
-## Modpacks
+# Modpacks
 
 For full descriptions of any mod on this list, visit [Modrinth](https://modrinth.com) or Google the mod name.
 
-### Server-side
+## Server-side
 
----
-
-#### Vanilla+
+### Vanilla+
 The most basic set of server-side mods for a Vanilla+ Minecraft experience with your friends. This modpack is extremely lightweight, mainly performance/optimization mods plus multiplayer QoL: sitting, sleep speed-up, proximity voice chat, player head drops.
 
 People playing on a Vanilla+ modpack server do **not** *need* to install any mods themselves to connect, though installing Simple Voice Chat is strongly recommended.
@@ -48,11 +46,9 @@ People playing on a Vanilla+ modpack server do **not** *need* to install any mod
 - **Networking:** Raknetify (Fabric)
 - **Libraries:** Fabric API, Fabric Language Kotlin, Architectury, Cloth Config, Fzzy Config, MidnightLib, TCDCommons API, YetAnotherConfigLib, Config Manager, Almanac, Collective
 
-### Client-side
+## Client-side
 
----
-
-#### Vanilla+
+### Vanilla+
 The most basic set of client-side mods — should be used if the server uses Vanilla+, but also works for **a better singleplayer experience**. Mostly client-side counterparts to the Vanilla+ server mods, plus QoL features like FPS display, waypoints, zoom, dynamic lighting, and better shulker boxes.
 
 **Full mod list:**
@@ -66,11 +62,11 @@ The most basic set of client-side mods — should be used if the server uses Van
 
 ---
 
-## Server Config
+# Server Config
 
 Here are the steps to host your own server end-to-end (~30-45 minute set-up).
 
-### 1. Set up server hosting
+## 1. Set up server hosting
 
 I recommend [Oracle Cloud](https://www.oracle.com/cloud/free/). Use a Pay As You Go subscription to host a virtual machine (VM) for your server. As long as you stay within the Always Free tier limits (up to 4 OCPUs and 24 GB of RAM total across A1.Flex instances), *you will not be charged*. 
 
@@ -87,7 +83,7 @@ The Free Tier gives more OCPU/RAM hours than there are hours in a month at those
 
 After creating the VM, you can also reserve a public IP in the Networking -> Reserved Public IPs section and attach it to your VM. Reserving one IP is free and means your IP won't change if the VM reboots (though creating a tmux session means it likely won't need to reboot).
 
-### 2. Open the firewall ports
+## 2. Open the firewall ports
 
 Minecraft uses TCP `25565`. Simple Voice Chat uses UDP `24454`. You must open up these ports on two separate layers:
 a) Oracle VCN security list (web console):
@@ -104,7 +100,7 @@ sudo netfilter-persistent save
 
 If `netfilter-persistent` isn't installed, do `sudo apt install -y iptables-persistent`.
 
-### 3. SSH into the VM and install dependencies
+## 3. SSH into the VM and install dependencies
 
 ```bash
 ssh ubuntu@<YOUR IP>
@@ -115,7 +111,7 @@ java -version
 
 The Java version printed should be "OpenJDK 21."
 
-### 4. Clone this repo and set up the server directory
+## 4. Clone this repo and set up the server directory
 
 ```bash
 cd ~
@@ -125,7 +121,7 @@ mkdir -p ~/my_server && cd ~/my_server
 
 The scripts and instructions below assume `~/my_server` as the server directory. If you choose a different name, **set `SERVER_DIR` when running the scripts below** (e.g. `SERVER_DIR=$HOME/foo ~/my_server/scripts/start.sh`).
 
-### 5. Install the server modpack (Fabric loader + mods)
+## 5. Install the server modpack (Fabric loader + mods)
 
 This repo ships server modpacks as `.mrpack` files (Modrinth format) under `server/modpacks/`. Reinstalls and restores stay reproducible since every mod is pinned to a specific Modrinth version. Unpack with [`mrpack-install`](https://github.com/nothub/mrpack-install).
 
@@ -143,7 +139,7 @@ cd ~/my_server
 
 `~/my_server/` will now contain `mods/`, the Fabric server launcher jar, and the Minecraft server jar.
 
-### 6. Initialize the server
+## 6. Initialize the server
 
 `mrpack-install` only downloaded files, so no configs exist yet.
 
@@ -256,7 +252,7 @@ Admin commands (op required):
 
 Tell each friend on first join to type `/register <pw> <pw>` to claim their username. Until registered or logged in, they can't move, chat, or break blocks.
 
-### 7. Copy over the helper scripts
+## 7. Copy over the helper scripts
 
 ```bash
 mkdir -p ~/my_server/scripts
@@ -264,7 +260,7 @@ cp ~/minecraft-server/server/scripts/*.sh ~/my_server/scripts/
 chmod +x ~/my_server/scripts/*.sh
 ```
 
-### 8. Boot up the server (for real)
+## 8. Boot up the server (for real)
 
 This time the server will generate the world and stay running.
 
@@ -276,7 +272,7 @@ tmux attach -t mc
 
 Connect to the server from Minecraft using the public IP you reserved.
 
-### 9. Schedule daily backups
+## 9. Schedule daily backups
 
 ```bash
 crontab -e
@@ -289,13 +285,13 @@ Change the schedule of backups by editing the "0 6 * * *" prefix (minute hour da
 
 Pick an off-peak hour, since `save-all flush` will stall the server briefly.
 
-## Server Scripts
+# Server Scripts
 
 There are two scripts in `server/scripts/`. Both have comments to explain what is going on. 
 1. [`start.sh`](server/scripts/start.sh): Launches the server in a tmux session with 10G of RAM allocated (optimal amount, increasing might be slightly counterproductive).
 2. [`backup.sh`](server/scripts/backup.sh): Saves all world directories to `backups/world-<timestamp>.tar.gz`, Keeps the newest `KEEP=N` snapshots (default is 2) and overwrites the rest.
 
-### Restoring from a backup
+## Restoring from a backup
 
 ```bash
 tmux attach -t mc
