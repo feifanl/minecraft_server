@@ -4,6 +4,15 @@ A collection of server/client modpacks for use by me and my friends, with docume
 
 ---
 
+## Contents
+
+- [Player Quick Start](#player-quick-start) - quickstart to join a server
+- [Modpacks](#modpacks) - what's in the server-side and client-side packs
+- [Server Config](#server-config) - host your own server end-to-end (Oracle Cloud)
+- [Server Scripts](#server-scripts) - scripts to start, backup, and restore servers
+
+---
+
 ## Player Quick Start
 
 1. Download a mod launcher, I recommend [Prism Launcher](https://prismlauncher.org/download/windows/).
@@ -23,6 +32,8 @@ For full descriptions of any mod on this list, visit [Modrinth](https://modrinth
 
 ### Server-side
 
+---
+
 #### Vanilla+
 The most basic set of server-side mods for a Vanilla+ Minecraft experience with your friends. This modpack is extremely lightweight, mainly performance/optimization mods plus multiplayer QoL: sitting, sleep speed-up, proximity voice chat, player head drops.
 
@@ -38,6 +49,8 @@ People playing on a Vanilla+ modpack server do **not** *need* to install any mod
 - **Libraries:** Fabric API, Fabric Language Kotlin, Architectury, Cloth Config, Fzzy Config, MidnightLib, TCDCommons API, YetAnotherConfigLib, Config Manager, Almanac, Collective
 
 ### Client-side
+
+---
 
 #### Vanilla+
 The most basic set of client-side mods — should be used if the server uses Vanilla+, but also works for **a better singleplayer experience**. Mostly client-side counterparts to the Vanilla+ server mods, plus QoL features like FPS display, waypoints, zoom, dynamic lighting, and better shulker boxes.
