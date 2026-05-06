@@ -7,9 +7,9 @@ A collection of server/client modpacks for use by me and my friends, with docume
 # Contents
 
 - [Player Quick Start](#player-quick-start) - quickstart to join a server
+- **[client/CLIENT_SETUP.md](client/CLIENT_SETUP.md)** - guide to join a server
+- **[server/SERVER_SETUP.md](server/SERVER_SETUP.md)** - end-to-end guide to host a server
 - [Modpacks](#modpacks) - what's in the server-side and client-side packs
-- **[server/SERVER_SETUP.md](server/SERVER_SETUP.md)** - end-to-end guide to host your own server on Oracle Cloud (free)
-- **[client/CLIENT_SETUP.md](client/CLIENT_SETUP.md)** - friend-facing guide to join a server with Prism Launcher
 
 ---
 
@@ -23,6 +23,16 @@ A collection of server/client modpacks for use by me and my friends, with docume
    ![alt text](images/image1.png)
 5. Launch the instance, then connect to the server with the IP from the host.
 6. Once you join, do `/register <pw> <pw>` to connect a password to your username. Do `/login <pw>` on future sessions.
+
+---
+
+# Joining a server
+
+See [`client/CLIENT_SETUP.md`](client/CLIENT_SETUP.md) for the Prism Launcher walkthrough.
+
+# Hosting your own server
+
+See [`server/SERVER_SETUP.md`](server/SERVER_SETUP.md) for the full end-to-end Oracle Cloud walkthrough.
 
 ---
 
@@ -59,14 +69,3 @@ The most basic set of client-side mods — should be used if the server uses Van
 - **Misc:** No Telemetry, Crash Assistant
 - **Libraries:** Fabric API, Fabric Language Kotlin, Architectury, Cloth Config v20, YetAnotherConfigLib, MidnightLib, Fzzy Config, TCDCommons API, Config Manager
 - **Optional:** ViaFabricPlus (download this if you want to play on a server that runs a different Minecraft version than your client)
-
-
----
-
-# Hosting your own server
-
-See [`server/SERVER_SETUP.md`](server/SERVER_SETUP.md) for the full end-to-end Oracle Cloud walkthrough — VM creation, firewall config, modpack install, EasyAuth, daily backups, and restoring from a backup. Plan ~45–60 minutes once your Oracle account is approved.
-
-# Joining a server (for friends)
-
-See [`client/CLIENT_SETUP.md`](client/CLIENT_SETUP.md) for the Prism Launcher walkthrough.

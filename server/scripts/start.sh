@@ -14,7 +14,8 @@ SERVER_DIR="${SERVER_DIR:-$HOME/my_server}"
 
 # The Fabric launcher jar produced by the Fabric installer. Filename varies
 # (mrpack-install names it like fabric-server-mc.<MC_VER>-loader.<LOADER_VER>-
-# launcher.<INSTALLER_VER>.jar). If unset, auto-detect the first match of
+# launcher.<INSTALLER_VER>.jar). 
+# If unset, auto-detect the first match of
 # fabric-server*.jar in $SERVER_DIR. Override with JAR=<filename> if needed.
 JAR="${JAR:-}"
 

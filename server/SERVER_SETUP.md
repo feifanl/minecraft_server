@@ -1,8 +1,8 @@
 # Minecraft Server Setup
 
-End-to-end guide to host a Fabric Minecraft server on a free Oracle Cloud ARM VM. Plan ~45–60 minutes for a first-timer (signup approval can add a multi-day wait, see step 1).
+This is an end-to-end guide to host a Fabric Minecraft server on a free Oracle Cloud ARM VM. It should take about ~45–60 minutes once your account is approved (can take multiple days). 
 
-This guide assumes zero prior cloud or Linux experience. Every step lists the exact button to click or command to paste.
+This guide assumes zero prior cloud or Linux experience.
 
 ---
 
@@ -30,16 +30,16 @@ This guide assumes zero prior cloud or Linux experience. Every step lists the ex
 
 ## 1. Sign up for Oracle Cloud
 
-Goal: a Pay-As-You-Go account so you can use the **Always Free** A1.Flex ARM VM (4 OCPUs / 24 GB RAM). You will not be charged as long as you stay under Always Free quotas.
+Goal: a Pay-As-You-Go account so you can use the **Always Free** A1.Flex ARM VM. You will *not be charged as long* as you stay under Always Free quotas of 4 OCPUs / 24 GB RAM.
 
 1. Go to <https://www.oracle.com/cloud/free/>.
-2. Click **Start for free** → fill in personal info, email, country.
-3. **Home region**: pick the geographically closest one to you. **This cannot be changed later** — the home region is where your Always Free resources live. If your closest region shows "out of capacity" for ARM later, you'll need a new account.
-4. Verify email → set password → enter address → enter mobile number (real one, you'll get an SMS code).
+2. Click **Start for free** -> fill in personal info, email, country.
+3. **Home region**: pick the geographically closest one to you. **This cannot be changed later**. If your closest region shows "out of capacity" for ARM later, you'll need a new account.
+4. Verify email -> set password -> enter address -> enter mobile number (real one since you'll need to verify with SMS).
 5. **Payment**: enter a real credit card. Oracle charges $0 to verify it. They will never auto-charge you unless you explicitly upgrade to PAYG and exceed free limits.
-6. Sign agreement → submit.
+6. Sign agreement -> submit.
 
-**Wait for approval.** Oracle reviews each new account. Approval can take anywhere from instant (rare) to 5–7 days (common, especially for trial → PAYG upgrade). If it stalls past 3 days, open a chat with Oracle support from the My Oracle Support page; mention you want to be moved to PAYG and they'll usually unblock within 24h. Always Free works on PAYG accounts; the trial credits are separate.
+**Wait for approval.** Oracle reviews each new account. Approval can take anywhere from instant (rare) to 5–7 days (common, especially for trial -> PAYG upgrade). If it stalls past 3 days, open a chat with Oracle support from the My Oracle Support page; mention you want to be moved to PAYG and they'll usually unblock within 24h. Always Free works on PAYG accounts; the trial credits are separate.
 
 You're done with this step when you can log into <https://cloud.oracle.com> and see the dashboard with no "trial expired" or "pending" banners.
 
@@ -54,7 +54,7 @@ You're done with this step when you can log into <https://cloud.oracle.com> and 
 5. **Placement**: pick any availability domain. If one fails with "out of host capacity," try a different one.
 6. **Image and shape**:
    - Click **Edit** → **Change image** → select **Canonical Ubuntu** → version **22.04** → **Select image**.
-   - Click **Change shape** → **Ampere** tab → select **VM.Standard.A1.Flex** → set **OCPUs = 4**, **Memory (GB) = 24** → **Select shape**. (Default is 1/6, you must crank both sliders manually to use your full Always Free quota.)
+   - Click **Change shape** → **Ampere** tab → select **VM.Standard.A1.Flex** → set **OCPUs = 4**, **Memory (GB) = 24** → **Select shape**. (Default is 1/6, you must manually change later).
 7. **Networking**:
    - Leave **Create new virtual cloud network** selected. Wizard auto-fills sane names.
    - **Public IPv4 address**: leave **Assign a public IPv4 address** checked.

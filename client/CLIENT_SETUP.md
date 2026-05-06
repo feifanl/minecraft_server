@@ -1,6 +1,6 @@
 # Joining the server with Prism Launcher
 
-Step-by-step setup for friends (~10 mins + download time).
+Step-by-step setup for friends to launch and join server (~10 mins + download time).
 
 ## Requirements
 - The server's public IP
