@@ -12,9 +12,11 @@ set -euo pipefail
 # Server directory.
 SERVER_DIR="${SERVER_DIR:-$HOME/my_server}"
 
-# The Fabric launcher jar produced by the Fabric installer. Filename varies, so
-# either change the jar's filename or set JAR=<YOUR_JAR_FILENAME> when running.
-JAR="${JAR:-fabric-server-launch.jar}"
+# The Fabric launcher jar produced by the Fabric installer. Filename varies
+# (mrpack-install names it like fabric-server-mc.<MC_VER>-loader.<LOADER_VER>-
+# launcher.<INSTALLER_VER>.jar). If unset, auto-detect the first match of
+# fabric-server*.jar in $SERVER_DIR. Override with JAR=<filename> if needed.
+JAR="${JAR:-}"
 
 # tmux session name. Must match that of backup.sh so I recommend keeping "mc."
 TMUX_SESSION="${TMUX_SESSION:-mc}"
@@ -29,10 +31,15 @@ JAVA_BIN="${JAVA_BIN:-java}"
 
 cd "$SERVER_DIR"
 
+# Auto-detect Fabric launcher jar if not explicitly set.
+if [[ -z "$JAR" ]]; then
+    JAR=$(ls fabric-server*.jar 2>/dev/null | head -n1 || true)
+fi
+
 # Check if the jar is there, if not output an error message
-if [[ ! -f "$JAR" ]]; then
-    echo "Server jar not found: $SERVER_DIR/$JAR" >&2
-    echo "Run the Fabric installer first, or set JAR=<filename>." >&2
+if [[ -z "$JAR" || ! -f "$JAR" ]]; then
+    echo "Server jar not found in $SERVER_DIR (looked for fabric-server*.jar)." >&2
+    echo "Run mrpack-install first, or set JAR=<filename>." >&2
     exit 1
 fi
 

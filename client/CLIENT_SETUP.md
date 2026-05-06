@@ -8,7 +8,7 @@ Step-by-step setup for friends (~10 mins + download time).
 
 ## 1. Install Prism Launcher
 
-Grab the installer from <https://prismlauncher.org/download/>. Run it once and it auto-downloads Java for you. Don't install Java separately.
+Download the installer from <https://prismlauncher.org/download/>. Run it once and it auto-downloads Java for you. Don't install Java separately.
 
 ## 2. Add your Microsoft account (or continue in offline mode)
 

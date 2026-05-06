@@ -1,0 +1,15 @@
+{
+  "main": {
+    "premiumAutologin": true,
+    "floodgateAutologin": false,
+    "enableGlobalPassword": false,
+    "sessionTimeoutTime": 86400,
+    "kickTime": 30
+  },
+  "experimental": {
+    "forcedOfflineUuids": false,
+    "preventAnotherLocationLog": true,
+    "debugMode": false
+  },
+  "lang": {}
+}
