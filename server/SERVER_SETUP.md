@@ -145,21 +145,28 @@ Once connected your prompt looks like `ubuntu@mc-server:~$`. Everything below ru
 
 ## 6. Open the firewall ports (OS layer)
 
-Oracle's default Ubuntu image ships with iptables rules that drop incoming traffic. Open the same two ports on the OS firewall:
+Oracle's default Ubuntu image ships with an iptables `REJECT all` rule on the INPUT chain. Order matters — first match wins — so ACCEPT rules **must sit above** the REJECT rule. Inserting at position 1 always lands above REJECT regardless of how default rules shift after reboot/persistence.
 
 ```bash
 sudo apt update
 sudo apt install -y iptables-persistent
-sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 25565 -j ACCEPT
-sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 24454 -j ACCEPT
+sudo iptables -I INPUT 1 -m state --state NEW -p tcp --dport 25565 -j ACCEPT
+sudo iptables -I INPUT 1 -m state --state NEW -p udp --dport 24454 -j ACCEPT
 sudo netfilter-persistent save
 ```
 
 Verify:
 ```bash
-sudo iptables -L INPUT -nv --line-numbers | head -15
+sudo iptables -L INPUT -nv --line-numbers
 ```
-You should see two ACCEPT rules at lines 6 and 7 with `dpt:25565` (tcp) and `dpt:24454` (udp).
+
+Expected: ACCEPT rows for `udp dpt:24454` and `tcp dpt:25565` appear **before** the `REJECT all reject-with icmp-host-prohibited` row. If REJECT comes first, the ACCEPT rules are dead code — re-run the inserts above.
+
+Test from the VM that local public IP is reachable on the port (loopback works regardless, public IP test catches firewall ordering bugs):
+```bash
+sudo apt install -y netcat-openbsd
+nc -vz $(curl -s ifconfig.me) 25565   # only meaningful AFTER step 12 when server is running
+```
 
 ---
 
@@ -398,6 +405,18 @@ Both scripts live in `~/my_server/scripts/` after step 11. Source: [`server/scri
 **`Connection timed out` on first SSH.** Check the Oracle VCN security list (step 4) and OS-level iptables (step 6). Also confirm you used the **reserved** IP, not the old ephemeral one.
 
 **Server boots but Minecraft client times out.** TCP `25565` not open on one of the two firewall layers. Re-run step 4 and step 6.
+
+**Most common variant: iptables ordering bug.** Run `sudo iptables -L INPUT -nv --line-numbers` on the VM. If a `REJECT all reject-with icmp-host-prohibited` row appears **above** your `ACCEPT tcp dpt:25565` row, traffic hits REJECT first and the ACCEPT is dead. Confirm with a self-test on the VM: `nc -vz $(curl -s ifconfig.me) 25565` returns `No route to host`. Fix:
+```bash
+# Find the line numbers of your stale ACCEPT rules and delete them
+sudo iptables -L INPUT -nv --line-numbers
+sudo iptables -D INPUT <line_number_of_old_25565_ACCEPT>
+sudo iptables -D INPUT <line_number_of_old_24454_ACCEPT>
+# Re-insert at position 1 (always above REJECT)
+sudo iptables -I INPUT 1 -m state --state NEW -p tcp --dport 25565 -j ACCEPT
+sudo iptables -I INPUT 1 -m state --state NEW -p udp --dport 24454 -j ACCEPT
+sudo netfilter-persistent save
+```
 
 **Voice chat doesn't connect.** UDP `24454` not open. Same fix.
 
