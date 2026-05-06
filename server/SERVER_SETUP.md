@@ -47,41 +47,41 @@ You're done with this step when you can log into <https://cloud.oracle.com> and 
 
 ## 2. Create the VM
 
-1. In the OCI console, top-left **hamburger menu (☰)** → **Compute** → **Instances**.
+1. In the OCI console, top-left **hamburger menu (☰)** -> **Compute** -> **Instances**.
 2. Click **Create instance**.
 3. **Name**: `mc-server` (or whatever you want).
 4. **Compartment**: leave default (root compartment).
 5. **Placement**: pick any availability domain. If one fails with "out of host capacity," try a different one.
 6. **Image and shape**:
-   - Click **Edit** → **Change image** → select **Canonical Ubuntu** → version **22.04** → **Select image**.
-   - Click **Change shape** → **Ampere** tab → select **VM.Standard.A1.Flex** → set **OCPUs = 4**, **Memory (GB) = 24** → **Select shape**. (Default is 1/6, you must manually change later).
+   - Click **Edit** -> **Change image** -> select **Canonical Ubuntu** -> version **22.04** -> **Select image**.
+   - Click **Change shape** -> **Ampere** tab -> select **VM.Standard.A1.Flex** -> set **OCPUs = 4**, **Memory (GB) = 24** -> **Select shape**. (Default is 1/6, you must manually change later).
 7. **Networking**:
    - Leave **Create new virtual cloud network** selected. Wizard auto-fills sane names.
    - **Public IPv4 address**: leave **Assign a public IPv4 address** checked.
 8. **Add SSH keys**:
-   - Recommended: **Generate a key pair for me** → click **Save private key** AND **Save public key**. Both will download (`ssh-key-YYYY-MM-DD.key` and `ssh-key-YYYY-MM-DD.key.pub`).
+   - Recommended: **Generate a key pair for me** -> click **Save private key** AND **Save public key**. Both will download (`ssh-key-YYYY-MM-DD.key` and `ssh-key-YYYY-MM-DD.key.pub`).
    - Save them somewhere stable (e.g. `~/.ssh/oracle/` on Mac/Linux or `C:\Users\<you>\.ssh\oracle\` on Windows). You'll need the **private** key file for SSH.
    - If you already have an SSH key, choose **Upload public key files** or **Paste public keys** instead.
 9. **Boot volume**: leave defaults (50 GB).
 10. **Initialization script** (cloud-init): leave blank. We do everything manually.
 11. **Block volumes**: skip.
-12. Click **Create**. Wait ~1 minute for the instance state to go **Provisioning** → **Running**.
+12. Click **Create**. Wait ~1 minute for the instance state to go **Provisioning** -> **Running**.
 
-Note the auto-assigned **Public IPv4 address** in the instance details — you'll use it in step 5. We'll swap it for a stable reserved IP next.
+Note the auto-assigned **Public IPv4 address** in the instance details - you'll use it in step 5. We'll swap it for a stable reserved IP next.
 
 ---
 
 ## 3. Reserve a public IP
 
-The default public IP is **ephemeral** — it gets thrown away whenever you stop the VM. Reserve a permanent one (free under Always Free) so friends don't have to update the server entry every time you reboot.
+The default public IP is **ephemeral** - it gets thrown away whenever you stop the VM. Reserve a permanent one (free under Always Free) so friends don't have to update the server entry every time you reboot.
 
-1. ☰ → **Networking** → **IP Management** → **Reserved Public IPs**.
-2. Click **Reserve Public IP Address** → name it `mc-server-ip` → make sure region matches your VM's region → **Reserve**.
-3. Open your VM in **Compute → Instances → mc-server**.
-4. Scroll to **Attached VNICs** → click the VNIC name (a hyperlink).
-5. **Resources** sidebar → **IPv4 Addresses** → click `⋮` (kebab menu) on the **Primary IP** row → **Edit**.
-6. **Public IP Type**: switch from **Ephemeral public IP** to **Reserved Public IP**. (If "Reserved" doesn't appear, first switch to **No public IP** → **Update**, re-open the dialog, then it'll show.)
-7. Pick the reserved IP you just made → **Update**.
+1. ☰ -> **Networking** -> **IP Management** -> **Reserved Public IPs**.
+2. Click **Reserve Public IP Address** -> name it `mc-server-ip` -> make sure region matches your VM's region -> **Reserve**.
+3. Open your VM in **Compute -> Instances -> mc-server**.
+4. Scroll to **Attached VNICs** -> click the VNIC name (a hyperlink).
+5. **Resources** sidebar -> **IPv4 Addresses** -> click `⋮` (kebab menu) on the **Primary IP** row -> **Edit**.
+6. **Public IP Type**: switch from **Ephemeral public IP** to **Reserved Public IP**. (If "Reserved" doesn't appear, first switch to **No public IP** -> **Update**, re-open the dialog, then it'll show.)
+7. Pick the reserved IP you just made -> **Update**.
 
 The new IP is now permanent. Use it for everything below.
 
@@ -91,9 +91,9 @@ The new IP is now permanent. Use it for everything below.
 
 Minecraft = TCP `25565`. Simple Voice Chat = UDP `24454`. Oracle blocks both by default at the network layer.
 
-1. ☰ → **Networking** → **Virtual Cloud Networks**.
+1. ☰ -> **Networking** -> **Virtual Cloud Networks**.
 2. Click your VCN (named like `vcn-YYYYMMDD-HHMM`).
-3. **Resources** sidebar → **Security Lists** → click the **Default Security List**.
+3. **Resources** sidebar -> **Security Lists** -> click the **Default Security List**.
 4. Click **Add Ingress Rules**, fill in:
 
    | Field | Value |
@@ -118,7 +118,7 @@ Minecraft = TCP `25565`. Simple Voice Chat = UDP `24454`. Oracle blocks both by 
 
 ## 5. SSH into the VM
 
-Open a terminal on your **local computer** (Windows PowerShell, macOS Terminal, or Linux shell — all have `ssh` built-in on modern OSes).
+Open a terminal on your **local computer** (Windows PowerShell, macOS Terminal, or Linux shell - all have `ssh` built-in on modern OSes).
 
 ```bash
 ssh -i <PATH_TO_PRIVATE_KEY> ubuntu@<YOUR_RESERVED_IP>
@@ -195,16 +195,16 @@ The rest of this guide assumes the server directory is `~/my_server`. If you pic
 
 ## 9. Install the server modpack
 
-This repo ships server modpacks as `.mrpack` files (Modrinth format) under `server/modpacks/`. Every mod is pinned to a Modrinth version + SHA, so reinstalls are reproducible. Unpack with [`mrpack-install`](https://github.com/nothub/mrpack-install) — it pulls the Fabric server launcher, the Minecraft server jar, and every mod in one go.
+This repo ships server modpacks as `.mrpack` files (Modrinth format) under `server/modpacks/`. Every mod is pinned to a Modrinth version + SHA, so reinstalls are reproducible. Unpack with [`mrpack-install`](https://github.com/nothub/mrpack-install) - it pulls the Fabric server launcher, the Minecraft server jar, and every mod in one go.
 
 ```bash
 # Install mrpack-install (one-time)
 wget https://github.com/nothub/mrpack-install/releases/latest/download/mrpack-install-linux-arm64 -O ~/mrpack-install
 chmod +x ~/mrpack-install
 
-# Install the server modpack into ~/my_server (note quotes — pack filename has spaces and parens)
+# Install the server modpack into ~/my_server (note quotes - pack filename has spaces and parens)
 cd ~/my_server
-~/mrpack-install "$HOME/minecraft-server/server/modpacks/Vanilla+ (Server).mrpack" --server-dir .
+~/mrpack-install "$HOME/minecraft-server/server/modpacks/<MODPACK_OF_CHOICE_NAME>.mrpack" --server-dir .
 ```
 
 `--server-dir .` installs into the current directory; without it, mrpack-install creates a `mc/` subdirectory.
@@ -215,7 +215,7 @@ After this step, `~/my_server/` contains `mods/`, `libraries/`, `versions/`, `mo
 
 ## 10. Drop in pre-tuned configs and accept the EULA
 
-`mrpack-install` only downloaded files — no `eula.txt` or `world/` exist yet. You need to:
+`mrpack-install` only downloaded files - no `eula.txt` or `world/` exist yet. You need to:
 1. Copy in this repo's pre-tuned `server.properties` and EasyAuth config.
 2. Boot the launcher once to generate `eula.txt`.
 3. Accept the EULA.
@@ -228,27 +228,27 @@ cp ~/minecraft-server/server/server.properties ./server.properties
 mkdir -p ./config/auth
 cp ~/minecraft-server/server/config/auth/config.json ./config/auth/config.json
 
-# 2. First boot — generates eula.txt then exits with "You need to agree to the EULA"
-java -Xms2G -Xmx2G -jar fabric-server*.jar nogui
+# 2. First boot - generates eula.txt then exits with "You need to agree to the EULA"
+java -Xms10G -Xmx10G -jar fabric-server*.jar nogui
 
 # 3. Accept Mojang's EULA
 sed -i 's/eula=false/eula=true/' eula.txt
 
-# 4. (Optional) Edit server properties — motd, max-players, view-distance, difficulty, etc.
+# 4. (Optional) Edit server properties - motd, max-players, view-distance, difficulty, etc.
 nano server.properties
 ```
 
 Common `server.properties` settings worth tweaking:
-- `motd=<text>` — message shown in the multiplayer server list
-- `max-players=<n>` — default 10
-- `view-distance=<n>` — chunk render distance, default 12
-- `simulation-distance=<n>` — chunk tick distance, default 10
+- `motd=<text>` - message shown in the multiplayer server list
+- `max-players=<n>` - default 10
+- `view-distance=<n>` - chunk render distance, default 12
+- `simulation-distance=<n>` - chunk tick distance, default 10
 - `difficulty=easy|normal|hard`
-- `gamemode=survival|creative` — default mode for new players
+- `gamemode=survival|creative` - default mode for new players
 - `pvp=true|false`
-- `spawn-protection=<n>` — radius around spawn ops can build in but normal players can't
+- `spawn-protection=<n>` - radius around spawn ops can build in but normal players can't
 
-**Do not change** `online-mode=false` or `white-list=true` unless you know what you're doing — both are required for EasyAuth + whitelisting to work.
+**Do not change** `online-mode=false` or `white-list=true` unless you know what you're doing - both are required for EasyAuth + whitelisting to work.
 
 After this step, `~/my_server/` looks like:
 
@@ -290,11 +290,12 @@ tmux attach -t mc
 
 The server boots inside a detached tmux session called `mc`. The first run takes 1–3 minutes to generate the world, then logs go quiet. You're done when you see something like `Done (X.Xs)! For help, type "help"`.
 
-**Detach from tmux without killing the server**: press `Ctrl-B` then `D`. The server keeps running while you're disconnected from SSH.
+**Detach from tmux without killing the server**: press `Ctrl-B` then `D`. 
+*The server will keep running even while you're disconnected from SSH*.
 
 **Re-attach later**: `tmux attach -t mc`.
 
-**Connect from Minecraft**: in the client, **Multiplayer → Add Server**, paste your reserved IP. Default port `25565` is fine.
+**Connect from Minecraft**: in the client, **Multiplayer -> Add Server**, paste your reserved IP. Default port `25565` is fine.
 
 ---
 
@@ -321,10 +322,10 @@ EasyAuth adds a password layer so people can't impersonate whitelisted usernames
 - `easyauth-*.jar` ships in `mods/`
 - `online-mode=false` is set in `server.properties`
 - `config/auth/config.json` ships with sane defaults:
-  - `premiumAutologin: true` — players with real Mojang accounts skip `/login` after registering once
-  - `sessionTimeoutTime: 86400` — re-login required every 24 hours
-  - `kickTime: 30` — idle non-logged-in players kicked after 30 seconds
-  - `enableGlobalPassword: false` — each player picks their own password
+  - `premiumAutologin: true` - players with real Mojang accounts skip `/login` after registering once
+  - `sessionTimeoutTime: 86400` - re-login required every 24 hours
+  - `kickTime: 30` - idle non-logged-in players kicked after 30 seconds
+  - `enableGlobalPassword: false` - each player picks their own password
 
 Tweak any of these by editing `config/auth/config.json` and running `auth reload` in the server console.
 
@@ -353,7 +354,7 @@ crontab -e
 0 6 * * * /home/ubuntu/my_server/scripts/backup.sh >> /home/ubuntu/my_server/backups/backup.log 2>&1
 ```
 
-This runs `backup.sh` at 06:00 UTC every day. Adjust the `0 6 * * *` prefix for a different time (`minute hour day-of-month month day-of-week`). Pick an off-peak hour for your group — `save-all flush` stalls the tick loop briefly while writing chunks.
+This runs `backup.sh` at 06:00 UTC every day. Adjust the `0 6 * * *` prefix for a different time (`minute hour day-of-month month day-of-week`). Pick an off-peak hour for your group - `save-all flush` stalls the tick loop briefly while writing chunks.
 
 `backup.sh` keeps the newest `KEEP=2` snapshots by default and overwrites older ones. Override with `KEEP=N` env var in the cron line if you want more.
 
@@ -373,7 +374,7 @@ tar -xzf backups/world-YYYYMMDD-HHMMSS.tar.gz
 ~/my_server/scripts/start.sh
 ```
 
-If the Nether or End existed in the backup, the tarball restores `world_nether/` and `world_the_end/` too — rename those out the same way before extracting.
+If the Nether or End existed in the backup, the tarball restores `world_nether/` and `world_the_end/` too - rename those out the same way before extracting.
 
 ---
 
@@ -392,7 +393,7 @@ Both scripts live in `~/my_server/scripts/` after step 11. Source: [`server/scri
 
 **`Out of host capacity` when creating or restarting the VM.** Common for ARM A1.Flex shapes. Wait 10 minutes and retry, or pick a different availability domain in the create wizard.
 
-**`Permissions for ssh-key.key are too open`.** Tighten ACL — see step 5.
+**`Permissions for ssh-key.key are too open`.** Tighten ACL - see step 5.
 
 **`Connection timed out` on first SSH.** Check the Oracle VCN security list (step 4) and OS-level iptables (step 6). Also confirm you used the **reserved** IP, not the old ephemeral one.
 
@@ -404,7 +405,7 @@ Both scripts live in `~/my_server/scripts/` after step 11. Source: [`server/scri
 
 **Fabric launcher jar not found by `start.sh`.** `start.sh` looks for `fabric-server*.jar` in `$SERVER_DIR`. If you renamed the jar or installed the modpack to a different directory, set `JAR=<filename>` and `SERVER_DIR=<dir>` env vars when invoking the script.
 
-**Daily backup didn't run.** Check `~/my_server/backups/backup.log`. Cron uses UTC by default — confirm your time is in UTC. `crontab -l` shows the current schedule.
+**Daily backup didn't run.** Check `~/my_server/backups/backup.log`. Cron uses UTC by default - confirm your time is in UTC. `crontab -l` shows the current schedule.
 
 **Server lags / TPS drops.** Pre-generate chunks with the [Chunky](https://modrinth.com/plugin/chunky) mod's console commands (`chunky radius 1000`, `chunky start`). spark profiler is also installed (`spark profiler --timeout 60`).
 

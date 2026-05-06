@@ -65,7 +65,7 @@ The most basic set of client-side mods — should be used if the server uses Van
 - **Enables Vanilla+ server features:** **Simple Voice Chat**, AppleSkin, Voxy
 - **Performance:** Sodium, Lithium, FerriteCore, ModernFix, ImmediatelyFast, EntityCulling, Cull Fewer Leaves, Dynamic FPS, Particle Core, Fast Noise
 - **Visual / QoL:** Iris, LambDynamicLights, Sound Physics Remastered, Zoomify, Fabrishot, Flashback, Fadeless
-- **UI tweaks:** Mod Menu, Controlling, Shulker Box Tooltip, Status Effect Bars, Toggle Nametags, FPS-Display, World Play Time, wWaypoints
+- **UI tweaks:** Mod Menu, Controlling, Searchables, Shulker Box Tooltip, Status Effect Bars, Toggle Nametags, FPS-Display, World Play Time, wWaypoints
 - **Misc:** No Telemetry, Crash Assistant
 - **Libraries:** Fabric API, Fabric Language Kotlin, Architectury, Cloth Config v20, YetAnotherConfigLib, MidnightLib, Fzzy Config, TCDCommons API, Config Manager
 - **Optional:** ViaFabricPlus (download this if you want to play on a server that runs a different Minecraft version than your client)
