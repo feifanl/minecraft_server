@@ -381,7 +381,7 @@ Tell each friend on first join: type `/register <pw> <pw>`. Until they register 
 
 ---
 
-## 14. Schedule daily backups
+## 14. Schedule daily backups and reboot on crash
 
 ```bash
 crontab -e
@@ -391,9 +391,10 @@ crontab -e
 
 ```
 0 6 * * * /home/ubuntu/my_server/scripts/backup.sh >> /home/ubuntu/my_server/backups/backup.log 2>&1
+@reboot /home/ubuntu/my_server/scripts/start.sh
 ```
 
-This runs `backup.sh` at 06:00 UTC every day. Adjust the `0 6 * * *` prefix for a different time (`minute hour day-of-month month day-of-week`). Pick an off-peak hour for your group - `save-all flush` stalls the tick loop briefly while writing chunks.
+This runs `backup.sh` at 06:00 UTC every day and reboots the server if the tmux/VM crashes. Adjust the `0 6 * * *` prefix for a different time (`minute hour day-of-month month day-of-week`). Pick an off-peak hour for your group - `save-all flush` stalls the tick loop briefly while writing chunks.
 
 `backup.sh` keeps the newest `KEEP=2` snapshots by default and overwrites older ones. Override with `KEEP=N` env var in the cron line if you want more.
 
