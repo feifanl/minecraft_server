@@ -50,7 +50,7 @@ People playing on a Vanilla+ modpack server do **not** *need* to install any mod
 **Full mod list:**
 - **Performance:** Lithium, Krypton, FerriteCore, ModernFix, Noisium, ScalableLux, C2ME (Concurrent Chunk Management Engine), Alternate Current, ServerCore, spark, View Distance Fix
 - **Worldgen / LOD:** Voxy, Voxy Server Side, Voxy WorldGen V2
-- **Gameplay:** Sit, Sleep Warp, Let Me Despawn, Get It Together Drops, Clumps, Just Player Heads, Playtime Command
+- **Gameplay:** Sleep Warp, Let Me Despawn, Get It Together Drops, Clumps, Just Player Heads, Playtime Command
 - **Admin / Utility:** LuckPerms, TAB (Fabric Tab List), Placeholder API, Chunky, EasyAuth
 - **Voice:** Simple Voice Chat (server side)
 - **Networking:** Raknetify (Fabric)
