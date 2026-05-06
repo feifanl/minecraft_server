@@ -51,7 +51,7 @@ People playing on a Vanilla+ modpack server do **not** *need* to install any mod
 - **Performance:** Lithium, Krypton, FerriteCore, ModernFix, Noisium, ScalableLux, C2ME (Concurrent Chunk Management Engine), Alternate Current, ServerCore, spark, View Distance Fix
 - **Worldgen / LOD:** Voxy, Voxy Server Side, Voxy WorldGen V2
 - **Gameplay:** Sleep Warp, Let Me Despawn, Get It Together Drops, Clumps, Just Player Heads, Playtime Command
-- **Admin / Utility:** LuckPerms, TAB (Fabric Tab List), Placeholder API, Chunky, EasyAuth
+- **Admin / Utility:** LuckPerms, TAB (Fabric Tab List), Placeholder API, Chunky, EasyAuth, SkinRestorer (fetches premium skins on offline-mode server)
 - **Voice:** Simple Voice Chat (server side)
 - **Networking:** Raknetify (Fabric)
 - **Libraries:** Fabric API, Fabric Language Kotlin, Architectury, Cloth Config, Fzzy Config, MidnightLib, TCDCommons API, YetAnotherConfigLib, Config Manager, Almanac, Collective
