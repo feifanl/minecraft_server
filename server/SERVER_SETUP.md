@@ -255,7 +255,13 @@ Common `server.properties` settings worth tweaking:
 - `pvp=true|false`
 - `spawn-protection=<n>` - radius around spawn ops can build in but normal players can't
 
-**Do not change** `online-mode=false` or `white-list=true` unless you know what you're doing - both are required for EasyAuth + whitelisting to work.
+**Do not change** `online-mode=false`, `white-list=true`, or `enforce-whitelist=true`. All three required:
+- `online-mode=false` - EasyAuth needs this so it can manage auth itself
+- `white-list=true` + `enforce-whitelist=true` - gates **who** can connect at all (without it, anyone with the IP can join, run `/register`, and grief inside EasyAuth's protections)
+
+EasyAuth alone isn't enough: it gates actions **after** connection, but doesn't block registration. Whitelist gates connection itself. You need both layers.
+
+**Whitelist + offline-mode UUID gotcha**: see step 13 — `whitelist add <name>` writes online (Mojang) UUIDs, but the server connects players with **offline** UUIDs computed from name. Mismatch -> kicked. Workaround documented in step 13.
 
 After this step, `~/my_server/` looks like:
 
@@ -280,19 +286,30 @@ After this step, `~/my_server/` looks like:
 
 ## 11. Install the helper scripts
 
+One-shot installer. Copies all helper scripts into `~/my_server/scripts/`, makes them executable, and appends short aliases to `~/.bashrc` so common operations have simple commands.
+
 ```bash
-mkdir -p ~/my_server/scripts
-cp ~/minecraft-server/server/scripts/*.sh ~/my_server/scripts/
-chmod +x ~/my_server/scripts/*.sh
+bash ~/minecraft-server/server/scripts/install.sh
+source ~/.bashrc
 ```
+
+Aliases now available from any shell:
+
+| Alias | Does |
+|---|---|
+| `wl add\|remove\|list <name>` | Manage whitelist (offline UUID-aware - see step 13) |
+| `op add\|remove\|list <name> [level]` | Manage ops (offline UUID-aware) |
+| `mc-attach` | Attach to the server's tmux session (`Ctrl-B D` to detach) |
+| `mc-start` | Launch the server in tmux (no-op if already running) |
+| `mc-backup` | Take a backup right now |
+| `mc-stop` | Send `stop` to the server console |
 
 ---
 
 ## 12. Boot the server for real
 
 ```bash
-~/my_server/scripts/start.sh
-tmux attach -t mc
+mc-start
 ```
 
 The server boots inside a detached tmux session called `mc`. The first run takes 1–3 minutes to generate the world, then logs go quiet. You're done when you see something like `Done (X.Xs)! For help, type "help"`.
@@ -300,7 +317,7 @@ The server boots inside a detached tmux session called `mc`. The first run takes
 **Detach from tmux without killing the server**: press `Ctrl-B` then `D`. 
 *The server will keep running even while you're disconnected from SSH*.
 
-**Re-attach later**: `tmux attach -t mc`.
+**Re-attach later**: `mc-attach`.
 
 **Connect from Minecraft**: in the client, **Multiplayer -> Add Server**, paste your reserved IP. Default port `25565` is fine.
 
@@ -308,20 +325,35 @@ The server boots inside a detached tmux session called `mc`. The first run takes
 
 ## 13. Whitelist players, EasyAuth, op management
 
-**Server console commands** (run inside `tmux attach -t mc`, **no leading slash**):
+**Offline-mode UUID gotcha (applies to both whitelist + ops)**
 
+Vanilla `whitelist add <name>` and `op <name>` look up the player's **online** Mojang UUID and write it to `whitelist.json` / `ops.json`. With `online-mode=false`, the server identifies players by **offline** UUID (deterministic hash of `OfflinePlayer:<name>`). Mismatch -> vanilla command writes the wrong UUID -> player gets kicked or ops don't apply.
+
+Fix: use the `wl` and `op` shell aliases (set up by `install.sh` in step 11). They compute the correct offline UUID, edit the JSON, and live-reload via tmux. Works for both premium and cracked accounts.
+
+```bash
+# Whitelist
+wl add <PLAYER_NAME>       # add player (offline UUID)
+wl remove <PLAYER_NAME     # remove
+wl list                    # show all whitelisted
+
+# Ops
+op add <PLAYER_NAME>       # op at level 4 (full)
+op add <PLAYER_NAME> 2     # op at level 2 (singleplayer cheats only)
+op remove <PLAYER_NAME     # deop
+op list                    # show all ops
 ```
-whitelist add <username>
-whitelist remove <username>
-whitelist list
-op <username>
-deop <username>
+
+Op levels: 1 = bypass spawn protection, 2 = singleplayer cheats, 3 = ban + multiplayer cmds, 4 = full access incl. `stop`. For trusted friends, use 4 (default).
+
+Both commands are live — no server restart needed. The player can connect / use op powers immediately.
+
+**Other server console commands** (run inside `mc-attach`, **no leading slash**):
+```
 stop                       # gracefully shuts the server down
 auth reload                # re-load EasyAuth config after editing it
 auth update <player> <pw>  # admin override password
 ```
-
-You can also edit `whitelist.json` and `ops.json` directly while the server is **stopped**. Op levels: 1 = bypass spawn protection, 2 = singleplayer cheats, 3 = ban + multiplayer commands, 4 = full access including `stop`. For trusted friends, use 4.
 
 **EasyAuth (`/register` and `/login` flow)**
 
@@ -389,10 +421,15 @@ If the Nether or End existed in the backup, the tarball restores `world_nether/`
 
 Both scripts live in `~/my_server/scripts/` after step 11. Source: [`server/scripts/`](scripts/). Both have inline comments.
 
-| Script | Purpose |
-|---|---|
-| [`start.sh`](scripts/start.sh) | Launches the server in a detached tmux session named `mc`, with Aikar's G1GC flags and 10G heap. Auto-detects the Fabric launcher jar (`fabric-server*.jar`). Override `SERVER_DIR`, `JAR`, `HEAP`, `JAVA_BIN`, `TMUX_SESSION` via env vars if needed. |
-| [`backup.sh`](scripts/backup.sh) | Pauses autosave, flushes chunks, tar.gz's `world/` + `world_nether/` + `world_the_end/`, re-enables autosave, prunes old snapshots beyond `KEEP=N`. Safe to run while the server is live. |
+| Script | Alias | Purpose |
+|---|---|---|
+| [`install.sh`](scripts/install.sh) | -- | One-time installer: copies the other scripts into `~/my_server/scripts/`, makes them executable, appends shell aliases to `~/.bashrc`. Idempotent (re-running won't double-append). |
+| [`start.sh`](scripts/start.sh) | `mc-start` | Launches the server in a detached tmux session named `mc`, with Aikar's G1GC flags and 10G heap. Auto-detects the Fabric launcher jar (`fabric-server*.jar`). Override `SERVER_DIR`, `JAR`, `HEAP`, `JAVA_BIN`, `TMUX_SESSION` via env vars if needed. |
+| [`backup.sh`](scripts/backup.sh) | `mc-backup` | Pauses autosave, flushes chunks, tar.gz's `world/` + `world_nether/` + `world_the_end/`, re-enables autosave, prunes old snapshots beyond `KEEP=N`. Safe to run while the server is live. |
+| [`wl.sh`](scripts/wl.sh) | `wl` | `wl add\|remove\|list <name>` — manages `whitelist.json` with offline UUIDs (required on `online-mode=false`). Live-reloads via tmux. |
+| [`op.sh`](scripts/op.sh) | `op` | `op add\|remove\|list <name> [level]` — manages `ops.json` with offline UUIDs. Live-reloads via tmux. |
+| (tmux) | `mc-attach` | Attach to the server tmux session — equivalent to `tmux attach -t mc`. |
+| (tmux) | `mc-stop` | Send `stop` to the server console — equivalent to `tmux send-keys -t mc "stop" Enter`. |
 
 ---
 
