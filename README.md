@@ -8,7 +8,8 @@ A collection of server/client modpacks for use by me and my friends, with docume
 
 - [Player Quick Start](#player-quick-start) - quickstart to join a server
 - **[client/CLIENT_SETUP.md](client/CLIENT_SETUP.md)** - guide to join a server
-- **[server/SERVER_SETUP.md](server/SERVER_SETUP.md)** - end-to-end guide to host a server
+- **[server/SERVER_SETUP.md](server/SERVER_SETUP.md)** - end-to-end guide to host a Fabric (Vanilla+) server
+- **[server/SERVER_SETUP_SUNLIT.md](server/SERVER_SETUP_SUNLIT.md)** - guide to host a Society: Sunlit Valley (Forge 1.20.1) server
 - [Modpacks](#modpacks) - what's in the server-side and client-side packs
 
 ---
@@ -42,6 +43,11 @@ For full descriptions of any mod on this list, visit [Modrinth](https://modrinth
 
 ## Server-side
 
+### Society: Sunlit Valley addon
+Drop-in addon for the [Society: Sunlit Valley](https://www.curseforge.com/minecraft/modpacks/society-sunlit-valley) modpack (Forge 1.20.1). Adds Simple Voice Chat server-side. See [`server/SERVER_SETUP_SUNLIT.md`](server/SERVER_SETUP_SUNLIT.md) for full Forge install steps.
+
+**Pack file:** [`server/modpacks/Sunlit Valley Server Addon.zip`](server/modpacks/Sunlit%20Valley%20Server%20Addon.zip) — unzip into the Sunlit Valley server's `mods/` folder.
+
 ### Vanilla+
 The most basic set of server-side mods for a Vanilla+ Minecraft experience with your friends. This modpack is extremely lightweight, mainly performance/optimization mods plus multiplayer QoL: sitting, sleep speed-up, proximity voice chat, player head drops.
 
@@ -57,6 +63,11 @@ People playing on a Vanilla+ modpack server do **not** *need* to install any mod
 - **Libraries:** Fabric API, Fabric Language Kotlin, Architectury, Cloth Config, Fzzy Config, MidnightLib, TCDCommons API, YetAnotherConfigLib, Config Manager, Almanac, Collective
 
 ## Client-side
+
+### Society: Sunlit Valley addon
+Drop-in addon for friends who already have the [Society: Sunlit Valley](https://www.curseforge.com/minecraft/modpacks/society-sunlit-valley) client modpack installed. Adds **Simple Voice Chat** + **3D Skin Layers**.
+
+**Pack file:** [`client/modpacks/Sunlit Valley Client Addon.zip`](client/modpacks/Sunlit%20Valley%20Client%20Addon.zip) — extract the two `.jar` files into the instance's `mods/` folder.
 
 ### Vanilla+
 The most basic set of client-side mods — should be used if the server uses Vanilla+, but also works for **a better singleplayer experience**. Mostly client-side counterparts to the Vanilla+ server mods, plus QoL features like FPS display, waypoints, zoom, dynamic lighting, and better shulker boxes.

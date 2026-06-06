@@ -53,3 +53,17 @@ Voice chat (Simple Voice Chat) auto-activates when you join. Press **V** to mute
 There are some pre-downloaded shader packs and resource packs. Feel free to play around with these and see what you like!
 
 To enable: **Options -> Video Settings -> Shader Packs / Resource Packs -> click one -> Done**.
+
+---
+
+## Joining a Society: Sunlit Valley server
+
+If the host runs Sunlit Valley (Forge 1.20.1) instead of Vanilla+:
+
+1. Install the **Society: Sunlit Valley** modpack normally from Prism (Add Instance -> Modrinth/CurseForge tab -> search) or via the [CurseForge launcher](https://www.curseforge.com/minecraft/modpacks/society-sunlit-valley).
+2. Download [`Sunlit Valley Client Addon.zip`](modpacks/Sunlit%20Valley%20Client%20Addon.zip) from this repo's `client/modpacks/` folder.
+3. Open the Sunlit Valley instance's `mods/` folder (Prism: right-click instance -> **Folder** -> open `mods/`).
+4. Extract the two `.jar` files from the addon zip into that `mods/` folder.
+5. Launch the instance and connect to the host's IP.
+
+Voice chat + 3D skin layers will be active.
